@@ -81,6 +81,7 @@ abstract class DBAbstractModel
                 foreach ($_named as $_param) {
                     $_stmt->bindValue($_param, $this->parametros[substr($_param, 1)]);
                 }
+
             }
             try {
                 if (!$_stmt->execute()) {

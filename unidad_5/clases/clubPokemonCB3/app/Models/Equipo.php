@@ -1,114 +1,140 @@
 <?php
-
 namespace App\Models;
 
-class Equipo extends DBAbstractModel
-{
+use DateTime;
+
+class Equipo extends DBAbstractModel{
+    
     private static $instancia;
-    public static function getInstancia()
-    {
-        if (!isset(self::$instancia)) {
-            $miclase = __CLASS__;
-            self::$instancia = new $miclase;
+    public static function getInstancia(){
+        if(!isset(self::$instancia)){
+            $miClase = __CLASS__;
+            self::$instancia = new $miClase;
         }
         return self::$instancia;
     }
-    public function __clone()
-    {
-        trigger_error('La clonación no es permitida!.', E_USER_ERROR);
+
+    public function __clone(){
+        trigger_error("La clonación no es permitida!", E_USER_ERROR);
     }
 
+    private $equipo;
     private $id;
-    private $nombre;
+    private $created_at;
     private $updated_at;
 
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
+    public function setEquipo($equipo){
+        $this->equipo = $equipo;
     }
 
-    public function setUpdatedAt($updated_at)
-    {
-        $this->updated_at = $updated_at;
-    }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getMensaje()
-    {
+    public function getMensaje(){
         return $this->mensaje;
     }
 
-    public function getUpdated()
-    {
-        return $this->updated_at;
+    function set(){
+        $this->query = "INSERT INTO equipos(equipo) VALUES(:equipo)";
+        $this->parametros["equipo"] = $this->equipo;
+        $this->mensaje = $this->get_results_from_query() ? "Equipo añadido" : "No se pudo añadir";
     }
-
-    public function getNombre()
+    function add($data)
     {
-        return $this->nombre;
+        $this->query = "INSERT INTO equipos(equipo) values(:equipo) ";
+        $this->parametros["equipo"] = $this->equipo;
+        $this->mensaje = $this->get_results_from_query() ? "Equipo añadido" : "No se pudo añadir";
     }
-
-    public function guardarenBD()
+    function getAll()
     {
-        $this->query = "INSERT INTO equipos (nombre) VALUES (:nombre)";
-        $this->parametros['nombre'] = $this->nombre;
+        $this->query = "SELECT * FROM equipos";
         $this->get_results_from_query();
-        $this->mensaje = 'Equipo creado';
+        return $this->rows;
     }
-
-    public function get($id = '')
-    {
-        if ($id != '') {
-            $this->query = "SELECT * FROM equipos WHERE id = :id";
-            $this->parametros['id'] = $id;
+    function get($equipo = ""){
+        if($equipo != '') {
+            $this->query = "SELECT *
+            FROM equipos
+            WHERE equipo LIKE :equipo";
+            //Cargamos los parámetros.
+            $this->parametros['equipo']= "%$equipo%";
+            //Ejecutamos consulta que devuelve registros.
             $this->get_results_from_query();
         }
+        if(count($this->rows) == 1) {
+            foreach ($this->rows[0] as $propiedad=>$valor) {
+            $this->$propiedad = $valor;
+            }
+            $this->mensaje = 'sh encontrado';
+        }
+        else {
+            $this->mensaje = 'sh no encontrado';
+        }
+        return $this->rows;
+    }
 
-        if (count($this->rows) == 1) {
-            foreach ($this->rows[0] as $propiedad => $valor) {
+    function getEquipoById($id = ""){
+        if($id != '') {
+            $this->query = "SELECT *
+            FROM equipos
+            WHERE id LIKE :id";
+            //Cargamos los parámetros.
+            $this->parametros['id']= $id;
+            //Ejecutamos consulta que devuelve registros.
+            $this->get_results_from_query();
+        }
+        if(count($this->rows) == 1) {
+            foreach ($this->rows[0] as $propiedad=>$valor) {
+            $this->$propiedad = $valor;
+            }
+            $this->mensaje = 'sh encontrado';
+        }
+        else {
+            $this->mensaje = 'sh no encontrado';
+        }
+        return $this->rows;
+    }
+
+    function getPerfil($data)
+    {
+        $this->query = "SELECT perfil FROM usuarios where user = :user and password = :password";
+        $this->parametros["user"] = $data["user"];
+        $this->parametros["password"] = $data["password"];
+        $this->get_results_from_query();
+        if(count($this->rows) == 1) {
+            foreach ($this->rows[0] as $propiedad=>$valor) {
                 $this->$propiedad = $valor;
             }
-            $this->mensaje = 'Equipo encontrado';
-        } else {
-            $this->mensaje = 'Equipo no encontrado';
+            $this->mensaje = 'sh encontrado';
         }
+        else {
+            $this->mensaje = 'sh no encontrado';
+        }
+        return $this->rows;   
     }
 
-    public function set($user_data=array())
-    {
-
+    function getPeriles(){
+        $this->query = "SELECT * FROM perfiles";
+        $this->get_results_from_query();
+        return $this->rows;
     }
-    
 
-
-    public function edit($user_data = array())
-    {
-        foreach ($user_data as $campo => $valor) {
+    function edit($data = array()){
+        foreach ($data as $campo => $valor) {
             $$campo = $valor;
         }
-        $this->query = "UPDATE equipos SET nombre = :nombre, updated_at = :updated_at WHERE id = :id";
-        $this->parametros['nombre'] = $nombre;
-        $this->updated_at = new \DateTime("now");
-        $this->parametros['updated_at'] = $updated_at;
-        $this->parametros['id'] = $id;
+        $this->query = 
+        "UPDATE equipos set equipo=:equipo, updated_at=:updated_at where id = :id";
+        $this->parametros["equipo"] = $equipo;
+        $mFormat="Y/m/d H:i";
+        $mDate = new DateTime();
+        $this->updated_at = $mDate->format($mFormat);
+        $this->parametros["updated_at"] = $this->updated_at;
         $this->get_results_from_query();
-        $this->mensaje = 'Equipo modificado';
+        $this->mensaje = "sh modificado";
     }
-
-    public function delete($id = '')
-    {
+     function delete($id = ""){
         $this->query = "DELETE FROM equipos WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
-        $this->mensaje = "Equipo borrado";
+        $this->parametros["id"] = $id;
+        $this-> get_results_from_query();
+        $this-> mensaje = "sh eliminado";
     }
-    function __construct() {
-        // Singleton no recomienda parámetros ya que
-        // podría dificultar la lectura de las instancias.
-        }
-        
 }
