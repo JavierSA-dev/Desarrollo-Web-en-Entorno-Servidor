@@ -10,7 +10,9 @@ $dotenv->load();
 
 session_start();
 
-
+if(!isset($_SESSION['autorizar'])){
+    $_SESSION['autorizar'] = false;
+}
 
 define('DBHOST', $_ENV['DB_HOST']);
 define('DBNAME', $_ENV['DB_NAME']);
@@ -19,17 +21,7 @@ define('DBPASS', $_ENV['DB_PASS']);
 define('DBPORT', $_ENV['DB_PORT']);
 
 $equipo = Equipo::getInstancia();
-$perfilClass = Perfil::getInstancia();
-$perfilClass->setPerfil($_SESSION['profile']);
 
-
-if(isset($_POST['credentials'])){
-    $perfil =  $perfilClass->getPerfilU($_POST)[0]['perfil'];
-    $perfilClass->setPerfil($perfil);
-    if(empty($perfil)){
-        $mesError = "Usuario o contraseña incorrectos";
-    }
-}
 
 
 
