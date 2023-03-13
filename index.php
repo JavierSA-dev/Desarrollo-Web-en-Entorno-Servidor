@@ -1,6 +1,8 @@
 <?php
 
 echo "<link rel='stylesheet' type='text/css' href='styles.css'>";
+echo "<br><a href=./DWES/DWES2Trim>Actividades de base de datos, Segundo trimestre</a><br>";
+echo "<a href=https://github.com/JavierSA-dev/desarrollo-servidor>Enlace github a todos los ejercicios</a>";
 
 $ejercicios = array(
 
@@ -8,7 +10,11 @@ $ejercicios = array(
         array("titulo" => "ej_prueba",
             "enlace" => "./DWES/unidad_1/ej_prueba.php",
             "tags" => "prueba",
-            "repositorio" => "https://github.com/JavierSA-dev/Desarrollo-Web-en-Entorno-Servidor/blob/master/unidad_1/ej_prueba.php")
+            "repositorio" => "https://github.com/JavierSA-dev/Desarrollo-Web-en-Entorno-Servidor/blob/master/unidad_1/ej_prueba.php"),
+        array("titulo" => "buscaminas",
+        "enlace" => "./DWES/buscaminas/index.php",
+        "tags" => "prueba",
+        "repositorio" => ""),
 
     ),
     "Tema2" => array(
@@ -143,8 +149,47 @@ $ejercicios = array(
             "enlace" => "./DWES/unidad_4/ficheros/ej1.php",
             "tags" => "archivo para leer un fichero",
             "repositorio" => ""),
+        array("titulo" => "ej11",
+            "enlace" => "./DWES/unidad_4/ficheros/ej2.php",
+            "tags" => "archivo para escribir en un fichero",
+            "repositorio" => ""),
+        array("titulo" => "Verbos irregulares",
+            "enlace" => "./DWES/unidad_4/irregulars_verbs/index.php",
+            "tags" => "Verbos irregulares",
+            "repositorio" => ""),
+            array("titulo" => "Sesiones_1",
+            "enlace" => "./DWES/unidad_4/sesiones/ej1.php",
+            "tags" => "Sesiones_1",
+            "repositorio" => ""),
+            array("titulo" => "Sesiones_2",
+            "enlace" => "./DWES/unidad_4/sesiones/ej2.php",
+            "tags" => "Sesiones_2",
+            "repositorio" => ""),
+            array("titulo" => "Sesiones_3",
+            "enlace" => "./DWES/unidad_4/sesiones/ej3.php",
+            "tags" => "Sesiones_3",
+            "repositorio" => ""),
+            
 
     ),
+    "Tema 5" => array(
+      array("titulo"=>"Club Pokemon",
+            "enlace"=>"./DWES/unidad_5/clases/clubPokemonCB3",
+            "tags"=>"clases",
+            "repositorio"=>""),
+      array("titulo"=>"Ej1",
+            "enlace"=>"./DWES/unidad_5/clases/ej1",
+            "tags"=>"clases",
+            "repositorio"=>""),
+      array("titulo"=>"Ej2",
+            "enlace"=>"./DWES/unidad_5/clases/ej2",
+            "tags"=>"clases",
+            "repositorio"=>""),
+            array("titulo"=>"Mascotas",
+              "enlace"=>"./DWES/unidad_5/clases/mascotas",
+              "tags"=>"clases",
+              "repositorio"=>""),
+    )
     );  
       echo "<div class='container'>";
       foreach($ejercicios as $unidad => $ejerciciosUnidad){
